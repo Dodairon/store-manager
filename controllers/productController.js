@@ -1,4 +1,3 @@
-const productModels = require('../models/productModels');
 const productServices = require('../services/productServices');
 
 const getAll = async (req, res) => {
@@ -45,10 +44,6 @@ const deleteProducts = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
-
-// const deleteProducts = async (id) => {
-//     await productModels.deleteProducts(id); 
-// };
 
 module.exports = {
     getAll,
