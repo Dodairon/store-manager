@@ -41,19 +41,34 @@ const create = async (sales) => {
   const [createSales] = await connection.execute(sql);
   const sql2 = `INSERT INTO
     StoreManager.sales_products (sale_id, product_id, quantity) VALUES(?, ?, ?)`;
-  sales.map(async (sale) => {
-    const createSale = await connection.execute(sql2, [
+  const saleMap = sales.map(async (sale) => {
+      await connection.execute(sql2, [
       createSales.insertId,
       sale.productId,
       sale.quantity,
     ]);
-    await Promise.all(createSale);
   });
+  await Promise.all(saleMap);
   return createSales.insertId;
 };
+
+const update = async (id, salesUpdates) => {
+    const sql = `UPDATE StoreManager.sales_products
+    SET quantity = ?
+    WHERE sale_id= ? AND product_id= ?`;
+    const saleMap = salesUpdates.map(async (sale) => {
+    await connection.execute(sql, [
+        sale.quantity,
+        id,
+        sale.productId,
+      ]);
+    });
+  await Promise.all(saleMap);
+  };
 
 module.exports = {
   getAll,
   getById,
   create,
+  update,
 };
